@@ -1,17 +1,14 @@
 import "./App.css";
-import Header from "./components/header";
-import Footer from "./components/footer";
-import Home from "./components/home";
+import { BrowserRouter } from "react-router-dom";
+import { FakelandiaRouter } from "./router/router";
 
 function App() {
   return (
-    <>
-      <Header />
-      <main>
-        <Home />
-      </main>
-      <Footer />
-    </>
+    // <ErrorBoundary FallbackComponent={<MyErrorFallback />}>
+    <BrowserRouter>
+      <FakelandiaRouter />
+    </BrowserRouter>
+    // </ErrorBoundary>
   );
 }
 
