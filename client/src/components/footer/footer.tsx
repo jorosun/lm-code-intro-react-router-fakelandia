@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
     <section>
-      <h1> Welcome to the footer section</h1>
+      <p> Jennifer Orosun © </p>
     </section>
   );
 };

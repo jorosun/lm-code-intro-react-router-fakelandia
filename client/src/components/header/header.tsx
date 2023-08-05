@@ -1,7 +1,8 @@
+import Nav from "./nav";
 const Header = () => {
   return (
     <section>
-      <h1> Welcome to the header section</h1>
+      <Nav />
     </section>
   );
 };
