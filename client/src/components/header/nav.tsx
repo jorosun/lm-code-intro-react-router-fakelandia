@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const Nav: React.FC = () => (
   <nav>
-    <ul>
+    <ul className="navbar-nav">
       <li>
         <NavLink to="/home">Home</NavLink>
       </li>
