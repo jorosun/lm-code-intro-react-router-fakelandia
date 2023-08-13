@@ -1,29 +1,65 @@
-import {
-  MisdemeanourKind,
-  MISDEMEANOURS,
-  Misdemeanour,
-} from "../types/misdemeanours.types";
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
+//import { MisdemeanourKind } from "../types/misdemeanours.types";
+import { Misdemeanour } from "../types/misdemeanours.types";
+// interface Misdemeanour {
+//   citizenId: number;
+//   misdemeanour: MisdemeanourKind;
+//   date: string;
+// }
 
-const Misdemeanours = () => {
+const MisdemeanoursPage: React.FC = () => {
+  const [misdemeanours, setMisdemeanours] = useState<Misdemeanour[]>([]);
+  const effectCalled = useRef<boolean>(false);
+
+  const BASE_URL = "http://localhost:8080/api";
+  const amount = 2;
+
+  useEffect(() => {
+    const fetchMisdemeanours = async () => {
+      try {
+        const response = await axios.get(BASE_URL + `/misdemeanours/${amount}`);
+
+        console.log(BASE_URL + `/misdemeanours/${amount}`);
+        setMisdemeanours(response.data.misdemeanour);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (effectCalled.current) return;
+    fetchMisdemeanours();
+    effectCalled.current = true;
+  }, []);
+
   return (
     <section>
       <h1> Welcome to the Misdemeanours page</h1>
+
       <table id="misdemeanours">
-        <tr>
-          <th>Citizen Id</th>
-          <th>Date</th>
-          <th>Misdemeanour</th>
-          <th>Punishment</th>
-        </tr>
-        <tr>
-          <td>citizenId </td>
-          <td>Date</td>
-          <td>Misdemeanour</td>
-          <td>Punishment</td>
-        </tr>
+        <thead>
+          <tr>
+            <th>Citizen Id</th>
+            <th>Date</th>
+            <th>Misdemeanour</th>
+            <th>Punishment</th>
+          </tr>
+        </thead>
+        <tbody>
+          {misdemeanours.map((misdemeanour) => {
+            return (
+              <tr>
+                <td>{misdemeanour.citizenId} </td>
+                <td>{misdemeanour.date} </td>
+                <td>{misdemeanour.misdemeanour}</td>
+                <td>Punishment</td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
     </section>
   );
 };
 
-export default Misdemeanours;
+export default MisdemeanoursPage;
