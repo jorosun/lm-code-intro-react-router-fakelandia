@@ -18,7 +18,7 @@ const MisdemeanoursPage: React.FC = () => {
     const fetchMisdemeanours = async () => {
       try {
         const response = await axios.get(BASE_URL + `misdemeanours/${amount}`);
-        setMisdemeanours(response.data);
+        setMisdemeanours(response.data.misdemeanour);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
