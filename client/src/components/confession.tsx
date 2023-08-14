@@ -7,7 +7,6 @@ import {
 } from "../types/misdemeanours.types";
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 
 type ReasonForContact = MisdemeanourKind | "just-talk";
 
@@ -16,8 +15,6 @@ interface Confession {
   reason: ReasonForContact;
   details: string;
 }
-
-const BASE_URL = "http://localhost:8080/api";
 
 const Confession = () => {
   const [confessions, setConfessions] = useState<Confession[]>([]);
@@ -29,26 +26,26 @@ const Confession = () => {
 
   const BASE_URL = "http://localhost:8080/api";
 
-  const checkConfession = async (
-    subject: string,
-    reason: ReasonForContact,
-    details: string
-  ) => {
-    if (subject !== null || reason !== null || details != null) {
-      const { subject, reason, details } = useParams<{
-        subject: string;
-        reason: ReasonForContact;
-        details: string;
-      }>();
+  const confessButton = () => {
+    if (subject !== null || reason !== null || detail != null) {
+      return (
+        <div className="confess-button">
+          <button type="button" title="confess" value="Confess" />
+        </div>
+      );
     }
   };
 
   const storeConfession = async () => {
     try {
-      const response = await axios({
+      await axios({
         method: "put",
-        url: `${BASE_URL}/confess/`,
-        params: { Confession },
+        url: `${BASE_URL}/confess`,
+        params: {
+          subject,
+          reason,
+          detail,
+        },
       });
     } catch (error) {
       console.error("Error sending confession to server:", error);
@@ -74,27 +71,15 @@ const Confession = () => {
           </div>
           <div>
             <label htmlFor="reason"> Reason for Contact </label>
-            <select name="reason" id="reason" required>
-              <option value="rudeness"> Rudeness </option>
-              <option value="vegetables"> Vegetables </option>
-              <option value="lift"> Lift </option>
-              <option value="united"> United </option>
-              <option value="just-talk"> Just Talk </option>
-            </select>
+            <input type="text" id="reason" name="reason" required />
           </div>
-          <div>
-            <label htmlFor="details"> Details </label>
-            <textarea id="details" name="details" cols={50} rows={5} required />
-          </div>
+          <fieldset>
+            <div>
+              <label htmlFor="details"> Details </label>
+              <input type="text" id="details" name="details" required />
+            </div>
+          </fieldset>
         </form>
-        <div className="confess-button">
-          <button
-            type="button"
-            title="confess"
-            value="Confess"
-            onClick={() => checkConfession(subject, reason, details)}
-          />
-        </div>
       </div>
     </section>
   );
