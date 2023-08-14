@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
+
 import { Misdemeanour } from "../types/misdemeanours.types";
 
 const MisdemeanoursPage: React.FC = () => {
@@ -7,16 +7,14 @@ const MisdemeanoursPage: React.FC = () => {
   const effectCalled = useRef<boolean>(false);
 
   const BASE_URL = "http://localhost:8080/api/";
-  const amount = 2;
+  const PHOTO_URL = "https://picsum.photos/";
+  const amount = 3;
 
   useEffect(() => {
     const fetchMisdemeanours = async () => {
-      try {
-        const response = await axios.get(BASE_URL + `misdemeanours/${amount}`);
-        setMisdemeanours(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+      const response = await fetch(BASE_URL + `misdemeanours/${amount}`);
+      const data = await response.json();
+      setMisdemeanours(data.misdemeanour);
     };
 
     if (effectCalled.current) return;
