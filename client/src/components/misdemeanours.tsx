@@ -1,27 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-//import { MisdemeanourKind } from "../types/misdemeanours.types";
 import { Misdemeanour } from "../types/misdemeanours.types";
-// interface Misdemeanour {
-//   citizenId: number;
-//   misdemeanour: MisdemeanourKind;
-//   date: string;
-// }
 
 const MisdemeanoursPage: React.FC = () => {
   const [misdemeanours, setMisdemeanours] = useState<Misdemeanour[]>([]);
   const effectCalled = useRef<boolean>(false);
 
-  const BASE_URL = "http://localhost:8080/api";
+  const BASE_URL = "http://localhost:8080/api/";
   const amount = 2;
 
   useEffect(() => {
     const fetchMisdemeanours = async () => {
       try {
-        const response = await axios.get(BASE_URL + `/misdemeanours/${amount}`);
-
-        console.log(BASE_URL + `/misdemeanours/${amount}`);
-        setMisdemeanours(response.data.misdemeanour);
+        const response = await axios.get(BASE_URL + `misdemeanours/${amount}`);
+        setMisdemeanours(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -34,7 +26,7 @@ const MisdemeanoursPage: React.FC = () => {
 
   return (
     <section>
-      <h1> Welcome to the Misdemeanours page</h1>
+      <h1> Welcome to the Misdemeanours Page</h1>
 
       <table id="misdemeanours">
         <thead>
