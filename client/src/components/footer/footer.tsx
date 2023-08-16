@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
     <section>
-      <p> Jennifer Orosun © </p>
+      <p> Fakelandia Government © </p>
     </section>
   );
 };

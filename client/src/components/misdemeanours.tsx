@@ -9,7 +9,7 @@ const MisdemeanoursPage: React.FC = () => {
 
   const BASE_URL = `http://localhost:8080/api/`;
   const amount = 50;
-  const photo_width = 100;
+  const photo_width = 150;
   const photo_height = 150;
 
   const table_URL = BASE_URL + `misdemeanours/${amount}`;
@@ -40,7 +40,16 @@ const MisdemeanoursPage: React.FC = () => {
           <tr>
             <th>Citizen Id</th>
             <th>Date</th>
-            <th>Misdemeanour</th>
+            <th>
+              Misdemeanour
+              <select id="filter" name="filter">
+                <option value="all"> All</option>
+                <option value="rudeness"> Rudeness 😜</option>
+                <option value="Lift"> Lift 🗣️</option>
+                <option value="vegetables"> Vegetables 🥗</option>
+                <option value="united"> United 😈</option>
+              </select>
+            </th>
             <th>Punishment</th>
           </tr>
         </thead>
