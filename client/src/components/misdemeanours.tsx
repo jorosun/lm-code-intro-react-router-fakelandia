@@ -9,11 +9,11 @@ const MisdemeanoursPage: React.FC = () => {
 
   const BASE_URL = `http://localhost:8080/api/`;
   const amount = 50;
-  const photo_width = 150;
+  const photo_width = 100;
   const photo_height = 150;
 
   const table_URL = BASE_URL + `misdemeanours/${amount}`;
-  const photo_URL = `https://picsum.photos/${photo_width}/${photo_height}`;
+  const photo_URL = `https://picsum.photos/${photo_width}/${photo_height}?random=`;
 
   useEffect(() => {
     if (effectCalled.current) return;
@@ -22,7 +22,6 @@ const MisdemeanoursPage: React.FC = () => {
     const fetchMisdemeanours = async () => {
       try {
         const response = await axios.get(table_URL);
-
         setMisdemeanours(response.data.misdemeanours);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -47,12 +46,14 @@ const MisdemeanoursPage: React.FC = () => {
         </thead>
         <tbody>
           {misdemeanours.map((misdemeanour) => {
+            const randomNumber = Math.floor(Math.random() * amount);
             return (
               <tr>
                 <td>{misdemeanour.citizenId} </td>
                 <td>{misdemeanour.date} </td>
                 <td>{misdemeanour.misdemeanour}</td>
-                <img src={photo_URL} alt="image of punishment" />;
+                <img src={photo_URL + randomNumber} alt="image of punishment" />
+                ;
               </tr>
             );
           })}
