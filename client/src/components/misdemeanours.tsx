@@ -4,11 +4,16 @@ import { Misdemeanour } from "../types/misdemeanours.types";
 
 const MisdemeanoursPage: React.FC = () => {
   const [misdemeanours, setMisdemeanours] = useState<Misdemeanour[]>([]);
+
   const effectCalled = useRef<boolean>(false);
 
   const BASE_URL = `http://localhost:8080/api/`;
-  const amount = 2;
+  const amount = 50;
+  const photo_width = 150;
+  const photo_height = 150;
+
   const table_URL = BASE_URL + `misdemeanours/${amount}`;
+  const photo_URL = `https://picsum.photos/${photo_width}/${photo_height}`;
 
   useEffect(() => {
     if (effectCalled.current) return;
@@ -23,6 +28,7 @@ const MisdemeanoursPage: React.FC = () => {
         console.error("Error fetching data:", error);
       }
     };
+
     fetchMisdemeanours();
   }, [misdemeanours, table_URL]);
 
@@ -46,7 +52,7 @@ const MisdemeanoursPage: React.FC = () => {
                 <td>{misdemeanour.citizenId} </td>
                 <td>{misdemeanour.date} </td>
                 <td>{misdemeanour.misdemeanour}</td>
-                <td>Punishment</td>
+                <img src={photo_URL} alt="image of punishment" />;
               </tr>
             );
           })}
