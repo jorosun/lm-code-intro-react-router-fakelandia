@@ -31,6 +31,17 @@ const MisdemeanoursPage: React.FC = () => {
     fetchMisdemeanours();
   }, [misdemeanours, table_URL]);
 
+  const getInitialState = () => {
+    const value = "All";
+    return value;
+  };
+
+  const [value, setValue] = useState(getInitialState);
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
+
   return (
     <section>
       <h1> Welcome to the Misdemeanours page</h1>
@@ -41,8 +52,13 @@ const MisdemeanoursPage: React.FC = () => {
             <th>Citizen Id</th>
             <th>Date</th>
             <th>
-              Misdemeanour
-              <select id="filter" name="filter">
+              <label htmlFor="filter"> Misdemeanour </label>
+              <select
+                id="filter"
+                name="filter"
+                value={value}
+                onChange={handleChange}
+              >
                 <option value="all"> All</option>
                 <option value="rudeness"> Rudeness 😜</option>
                 <option value="Lift"> Lift 🗣️</option>
@@ -54,18 +70,23 @@ const MisdemeanoursPage: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {misdemeanours.map((misdemeanour) => {
-            const randomNumber = Math.floor(Math.random() * amount);
-            return (
-              <tr>
-                <td>{misdemeanour.citizenId} </td>
-                <td>{misdemeanour.date} </td>
-                <td>{misdemeanour.misdemeanour}</td>
-                <img src={photo_URL + randomNumber} alt="image of punishment" />
-                ;
-              </tr>
-            );
-          })}
+          {misdemeanours
+            .filter((misdemeanour) => misdemeanour.misdemeanour === `${value}`)
+            .map((filtered) => {
+              const randomNumber = Math.floor(Math.random() * amount);
+              return (
+                <tr>
+                  <td>{filtered.citizenId} </td>
+                  <td>{filtered.date} </td>
+                  <td>{filtered.misdemeanour}</td>
+                  <img
+                    src={photo_URL + randomNumber}
+                    alt="image of punishment"
+                  />
+                </tr>
+              );
+            })}
+          ;
         </tbody>
       </table>
     </section>

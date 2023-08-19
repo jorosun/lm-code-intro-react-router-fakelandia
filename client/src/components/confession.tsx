@@ -1,11 +1,5 @@
-import {
-  JustTalk,
-  JUST_TALK,
-  Misdemeanour,
-  MisdemeanourKind,
-  MISDEMEANOURS,
-} from "../types/misdemeanours.types";
-import React, { useState, useEffect, useRef } from "react";
+import { MisdemeanourKind } from "../types/misdemeanours.types";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 
 type ReasonForContact = MisdemeanourKind | "just-talk";
@@ -51,6 +45,16 @@ const Confession = () => {
       console.error("Error sending confession to server:", error);
     }
   };
+  const getInitialState = () => {
+    const value = "just-talk";
+    return value;
+  };
+
+  const [value, setValue] = useState(getInitialState);
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
 
   return (
     <section>
@@ -71,7 +75,19 @@ const Confession = () => {
           </div>
           <div>
             <label htmlFor="reason"> Reason for Contact </label>
-            <input type="text" id="reason" name="reason" required />
+            <select
+              id="reason"
+              name="reason"
+              value={value}
+              onChange={handleChange}
+              required
+            >
+              <option value="just-talk"> Just Talk</option>
+              <option value="rudeness"> Rudeness 😜</option>
+              <option value="Lift"> Lift 🗣️</option>
+              <option value="vegetables"> Vegetables 🥗</option>
+              <option value="united"> United 😈</option>
+            </select>
           </div>
           <fieldset>
             <div>
@@ -79,6 +95,7 @@ const Confession = () => {
               <input type="text" id="details" name="details" required />
             </div>
           </fieldset>
+          <p> {`you selected ${value}`} </p>
         </form>
       </div>
     </section>
