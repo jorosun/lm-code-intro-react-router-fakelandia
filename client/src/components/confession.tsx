@@ -21,7 +21,7 @@ const Confession = () => {
   const BASE_URL = "http://localhost:8080/api";
 
   const confessButton = () => {
-    if (subject !== null || reason !== null || detail != null) {
+    if (subject !== null || reason !== null || detail !== null) {
       return (
         <div className="confess-button">
           <button type="button" title="confess" value="Confess" />
@@ -52,7 +52,9 @@ const Confession = () => {
 
   const [value, setValue] = useState(getInitialState);
 
-  const handleChange = (e) => {
+  const handleChange = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setValue(e.target.value);
   };
 

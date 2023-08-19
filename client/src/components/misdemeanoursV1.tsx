@@ -32,12 +32,11 @@ const MisdemeanoursPage: React.FC = () => {
   }, [misdemeanours, table_URL]);
 
   const getInitialState = () => {
-    const value = "all";
+    const value = "All";
     return value;
   };
 
   const [value, setValue] = useState(getInitialState);
-  let filteredArray = misdemeanours;
 
   const handleChange = (e: {
     target: { value: React.SetStateAction<string> };
@@ -45,14 +44,6 @@ const MisdemeanoursPage: React.FC = () => {
     setValue(e.target.value);
   };
 
-  const checkValue = () => {
-    if (value !== "all") {
-      return misdemeanours.filter(
-        (misdemeanour) => misdemeanour.misdemeanour === `${value}`
-      );
-    }
-    return filteredArray;
-  };
   return (
     <section>
       <h1> Welcome to the Misdemeanours page</h1>
@@ -72,7 +63,7 @@ const MisdemeanoursPage: React.FC = () => {
               >
                 <option value="all"> All</option>
                 <option value="rudeness"> Rudeness 😜</option>
-                <option value="lift"> Lift 🗣️</option>
+                <option value="Lift"> Lift 🗣️</option>
                 <option value="vegetables"> Vegetables 🥗</option>
                 <option value="united"> United 😈</option>
               </select>
@@ -81,18 +72,22 @@ const MisdemeanoursPage: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {(filteredArray = checkValue()).map((filtered) => {
-            const randomNumber = Math.floor(Math.random() * amount);
-
-            return (
-              <tr>
-                <td>{filtered.citizenId} </td>
-                <td>{filtered.date} </td>
-                <td>{filtered.misdemeanour}</td>
-                <img src={photo_URL + randomNumber} alt="image of punishment" />
-              </tr>
-            );
-          })}
+          {misdemeanours
+            .filter((misdemeanour) => misdemeanour.misdemeanour === `${value}`)
+            .map((filtered) => {
+              const randomNumber = Math.floor(Math.random() * amount);
+              return (
+                <tr>
+                  <td>{filtered.citizenId} </td>
+                  <td>{filtered.date} </td>
+                  <td>{filtered.misdemeanour}</td>
+                  <img
+                    src={photo_URL + randomNumber}
+                    alt="image of punishment"
+                  />
+                </tr>
+              );
+            })}
           ;
         </tbody>
       </table>
