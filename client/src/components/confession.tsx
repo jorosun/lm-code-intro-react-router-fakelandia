@@ -1,6 +1,6 @@
 import { MisdemeanourKind } from "../types/misdemeanours.types";
-import React, { useState, useRef } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+// import axios from "axios";
 
 type ReasonForContact = MisdemeanourKind | "just-talk";
 
@@ -11,17 +11,30 @@ interface Confession {
 }
 
 const Confession = () => {
-  const [confessions, setConfessions] = useState<Confession[]>([]);
-  const effectCalled = useRef<boolean>(false);
+  //  const [confessions, setConfessions] = useState<Confession[]>([]);
+  // const effectCalled = useRef<boolean>(false);
 
-  const [subject, setSubject] = useState<string | null>(null);
-  const [reason, setReason] = useState<ReasonForContact | null>(null);
-  const [detail, setDetail] = useState<string | null>(null);
+  // const [subject, setSubject] = useState<string | null>(null);
+  //  const [reason, setReason] = useState<ReasonForContact>(`just-talk`);
+  //  const [details, setDetails] = useState<string | null>(null);
 
-  const BASE_URL = "http://localhost:8080/api";
+  // const { state, setState } = React.useState({
+  //   subject: ``,
+  //   reason: `just-talk`,
+  //   details: ``,
+  // });
 
-  const confessButton = () => {
-    if (subject !== null || reason !== null || detail !== null) {
+  const [subject, setSubject] = useState<string>("");
+  const [details, setDetails] = useState<string>("");
+
+  // const BASE_URL = "http://localhost:8080/api";
+
+  const confessButton = (
+    subject: string,
+    reason: ReasonForContact,
+    details: string
+  ) => {
+    if (subject !== null || reason !== null || details !== null) {
       return (
         <div className="confess-button">
           <button type="button" title="confess" value="Confess" />
@@ -30,32 +43,45 @@ const Confession = () => {
     }
   };
 
-  const storeConfession = async () => {
-    try {
-      await axios({
-        method: "put",
-        url: `${BASE_URL}/confess`,
-        params: {
-          subject,
-          reason,
-          detail,
-        },
-      });
-    } catch (error) {
-      console.error("Error sending confession to server:", error);
-    }
-  };
-  const getInitialState = () => {
-    const value = "just-talk";
-    return value;
-  };
+  // const storeConfession = async () => {
+  //   try {
+  //     await axios({
+  //       method: "put",
+  //       url: `${BASE_URL}/confess`,
+  //       params: {
+  //         subject,
+  //         reason,
+  //         details,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.error("Error sending confession to server:", error);
+  //   }
+  // };
 
-  const [value, setValue] = useState(getInitialState);
+  const getInitialReasonState = () => {
+    const reason = "just-talk";
+    return reason;
+  };
+  // const [value, setValue] = useState(getInitialState);
+  const [reason, setReason] = useState(getInitialReasonState);
 
-  const handleChange = (e: {
+  const handleChangeSubject = (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
-    setValue(e.target.value);
+    setSubject(e.target.value);
+  };
+
+  const handleChangeReason = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setReason(e.target.value);
+  };
+
+  const handleChangeDetails = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setDetails(e.target.value);
   };
 
   return (
@@ -72,17 +98,22 @@ const Confession = () => {
       <div className="feedback-form">
         <form className="form-style-1">
           <div>
-            <label htmlFor="subject">Subject </label>
-            <input type="text" id="subject" name="subject" required />
+            <label htmlFor="subject"> Subject </label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              value={subject}
+              onChange={handleChangeSubject}
+            />
           </div>
           <div>
             <label htmlFor="reason"> Reason for Contact </label>
             <select
               id="reason"
               name="reason"
-              value={value}
-              onChange={handleChange}
-              required
+              value={reason}
+              onChange={handleChangeReason}
             >
               <option value="just-talk"> Just Talk</option>
               <option value="rudeness"> Rudeness 😜</option>
@@ -94,10 +125,20 @@ const Confession = () => {
           <fieldset>
             <div>
               <label htmlFor="details"> Details </label>
-              <input type="text" id="details" name="details" required />
+              <input
+                type="textarea"
+                id="details"
+                name="details"
+                value={details}
+                onChange={handleChangeDetails}
+              />
             </div>
           </fieldset>
-          <p> {`you selected ${value}`} </p>
+
+          <p>
+            {subject} {reason} {details}
+          </p>
+          {confessButton({ subject }, { reason }, { details })}
         </form>
       </div>
     </section>
