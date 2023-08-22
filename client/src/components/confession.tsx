@@ -1,6 +1,6 @@
 import { MisdemeanourKind } from "../types/misdemeanours.types";
 import React, { useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 
 type ReasonForContact = MisdemeanourKind | "just-talk";
 
@@ -14,56 +14,57 @@ const Confession = () => {
   //  const [confessions, setConfessions] = useState<Confession[]>([]);
   // const effectCalled = useRef<boolean>(false);
 
-  // const [subject, setSubject] = useState<string | null>(null);
-  //  const [reason, setReason] = useState<ReasonForContact>(`just-talk`);
-  //  const [details, setDetails] = useState<string | null>(null);
-
-  // const { state, setState } = React.useState({
-  //   subject: ``,
-  //   reason: `just-talk`,
-  //   details: ``,
-  // });
-
   const [subject, setSubject] = useState<string>("");
   const [details, setDetails] = useState<string>("");
 
-  // const BASE_URL = "http://localhost:8080/api";
+  const BASE_URL = "http://localhost:8080/api";
 
-  const confessButton = (
-    subject: string,
-    reason: ReasonForContact,
-    details: string
-  ) => {
-    if (subject !== null || reason !== null || details !== null) {
+  const confessButton = () => {
+    console.log(subject);
+    console.log(reason);
+    console.log(details);
+
+    if (subject.length !== 0 && reason.length !== 0 && details.length !== 0) {
+      console.log("values", subject, reason, details);
       return (
         <div className="confess-button">
-          <button type="button" title="confess" value="Confess" />
+          <button
+            type="button"
+            title="confess"
+            value="Confess"
+            onClick={storeConfession}
+          />
         </div>
       );
     }
   };
 
-  // const storeConfession = async () => {
-  //   try {
-  //     await axios({
-  //       method: "put",
-  //       url: `${BASE_URL}/confess`,
-  //       params: {
-  //         subject,
-  //         reason,
-  //         details,
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.error("Error sending confession to server:", error);
-  //   }
-  // };
+  const storeConfession = async () => {
+    if (reason === "just-talk") {
+      return <p> Thankyou for talking to us</p>;
+    } else {
+      try {
+        await axios({
+          method: "put",
+          url: `${BASE_URL}/confess`,
+          params: {
+            subject,
+            reason,
+            details,
+          },
+        });
+      } catch (error) {
+        console.error("Error sending confession to server:", error);
+      }
+      return <p> Thankyou for confessing to us</p>;
+    }
+  };
 
   const getInitialReasonState = () => {
     const reason = "just-talk";
     return reason;
   };
-  // const [value, setValue] = useState(getInitialState);
+
   const [reason, setReason] = useState(getInitialReasonState);
 
   const handleChangeSubject = (e: {
@@ -138,7 +139,7 @@ const Confession = () => {
           <p>
             {subject} {reason} {details}
           </p>
-          {confessButton({ subject }, { reason }, { details })}
+          {confessButton()}
         </form>
       </div>
     </section>
