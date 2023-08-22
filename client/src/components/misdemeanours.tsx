@@ -22,6 +22,7 @@ const MisdemeanoursPage: React.FC = () => {
     const fetchMisdemeanours = async () => {
       try {
         const response = await axios.get(table_URL);
+        console.log(response);
         setMisdemeanours(response.data.misdemeanours);
       } catch (error) {
         console.error("Error fetching data:", error);

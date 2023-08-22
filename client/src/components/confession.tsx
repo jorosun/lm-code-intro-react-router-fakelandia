@@ -6,8 +6,8 @@ type ReasonForContact = MisdemeanourKind | "just-talk";
 
 interface Confession {
   subject: string;
-  reason: ReasonForContact;
   details: string;
+  reason: ReasonForContact;
 }
 
 const Confession = () => {
@@ -27,36 +27,28 @@ const Confession = () => {
     if (subject.length !== 0 && reason.length !== 0 && details.length !== 0) {
       console.log("values", subject, reason, details);
       return (
-        <div className="confess-button">
-          <button
-            type="button"
-            title="confess"
-            value="Confess"
-            onClick={storeConfession}
-          />
+        <div>
+          <button className="confess-button" onClick={storeConfession}>
+            Confess
+          </button>
         </div>
       );
     }
   };
 
   const storeConfession = async () => {
-    if (reason === "just-talk") {
-      return <p> Thankyou for talking to us</p>;
-    } else {
-      try {
-        await axios({
-          method: "put",
-          url: `${BASE_URL}/confess`,
-          params: {
-            subject,
-            reason,
-            details,
-          },
-        });
-      } catch (error) {
-        console.error("Error sending confession to server:", error);
-      }
-      return <p> Thankyou for confessing to us</p>;
+    console.log(subject);
+    console.log(reason);
+    console.log(details);
+
+    const confessInput = { subject, details, reason };
+    console.log(confessInput);
+
+    try {
+      const response = await axios.put(`${BASE_URL}/confess/${confessInput}`);
+      console.log(response);
+    } catch (error) {
+      console.error("Error sending confession to server:", error);
     }
   };
 
